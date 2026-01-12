@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de Aula - Tipos de Narrador | PlanBel</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #1a1a2e;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 2.5rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .content {
+            padding: 2rem;
+        }
+        
+        .section {
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .section-header .icon {
+            font-size: 1.25rem;
+        }
+        
+        .section-body {
+            padding: 1.25rem;
+            background: #f8fafc;
+            border-left: 4px solid;
+        }
+        
+        /* Color schemes for different sections */
+        .section.info .section-header { background: #dbeafe; color: #1e40af; }
+        .section.info .section-body { border-color: #3b82f6; }
+        
+        .section.objectives .section-header { background: #dcfce7; color: #166534; }
+        .section.objectives .section-body { border-color: #22c55e; }
+        
+        .section.bncc .section-header { background: #fef3c7; color: #92400e; }
+        .section.bncc .section-body { border-color: #f59e0b; }
+        
+        .section.resources .section-header { background: #fce7f3; color: #9d174d; }
+        .section.resources .section-body { border-color: #ec4899; }
+        
+        .section.methodology .section-header { background: #e0e7ff; color: #3730a3; }
+        .section.methodology .section-body { border-color: #6366f1; }
+        
+        .section.evaluation .section-header { background: #ccfbf1; color: #115e59; }
+        .section.evaluation .section-body { border-color: #14b8a6; }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .info-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .info-item label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        
+        .info-item span {
+            font-weight: 500;
+            color: #1e293b;
+        }
+        
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        ul li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        ul li:last-child {
+            border-bottom: none;
+        }
+        
+        ul li::before {
+            content: "✓";
+            background: #22c55e;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .bncc-code {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+        }
+        
+        .moment {
+            background: white;
+            padding: 1.25rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .moment:last-child {
+            margin-bottom: 0;
+        }
+        
+        .moment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .moment-title {
+            font-weight: 600;
+            color: #3730a3;
+        }
+        
+        .moment-time {
+            background: #e0e7ff;
+            color: #4f46e5;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .moment-content {
+            color: #475569;
+            line-height: 1.6;
+        }
+        
+        .footer {
+            background: #f1f5f9;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        
+        .footer .logo {
+            font-weight: 700;
+            color: #6366f1;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Tipos de Narrador e Ponto de Vista Narrativo</h1>
+            <div class="badge-container">
+                <span class="badge">📖 Língua Portuguesa</span>
+                <span class="badge">🎓 7º Ano - Ensino Fundamental</span>
+                <span class="badge">⏱️ 2 aulas de 50 min</span>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- Identificação -->
+            <div class="section info">
+                <div class="section-header">
+                    <span class="icon">📋</span>
+                    Identificação
+                </div>
+                <div class="section-body">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Disciplina</label>
+                            <span>Língua Portuguesa</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Ano/Série</label>
+                            <span>7º ano - Ensino Fundamental</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Duração</label>
+                            <span>2 aulas de 50 minutos</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Tema</label>
+                            <span>Tipos de Narrador</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Habilidades BNCC -->
+            <div class="section bncc">
+                <div class="section-header">
+                    <span class="icon">📜</span>
+                    Habilidades BNCC
+                </div>
+                <div class="section-body">
+                    <p>
+                        <span class="bncc-code">EF67LP28</span>
+                        Ler, de forma autônoma, e compreender – selecionando procedimentos e estratégias de leitura adequados a diferentes objetivos e levando em conta características dos gêneros e suportes –, romances infanto-juvenis, contos populares, contos de terror, lendas brasileiras.
+                    </p>
+                    <p style="margin-top: 1rem;">
+                        <span class="bncc-code">EF69LP44</span>
+                        Inferir a presença de valores sociais, culturais e humanos e de diferentes visões de mundo, em textos literários, reconhecendo nesses textos formas de estabelecer múltiplos olhares sobre as identidades, sociedades e culturas.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Objetivos -->
+            <div class="section objectives">
+                <div class="section-header">
+                    <span class="icon">🎯</span>
+                    Objetivos de Aprendizagem
+                </div>
+                <div class="section-body">
+                    <ul>
+                        <li>Identificar e diferenciar os tipos de narrador: narrador-personagem (1ª pessoa), narrador-observador (3ª pessoa) e narrador-onisciente</li>
+                        <li>Reconhecer o efeito de sentido produzido pela escolha do ponto de vista narrativo em diferentes textos literários</li>
+                        <li>Analisar como a escolha do narrador influencia a construção da narrativa e a percepção do leitor</li>
+                        <li>Produzir pequenos textos narrativos experimentando diferentes tipos de narrador</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Recursos -->
+            <div class="section resources">
+                <div class="section-header">
+                    <span class="icon">📦</span>
+                    Recursos Didáticos
+                </div>
+                <div class="section-body">
+                    <ul>
+                        <li>Trechos de textos literários (Machado de Assis, Clarice Lispector)</li>
+                        <li>Projetor multimídia</li>
+                        <li>Quadro branco e marcadores</li>
+                        <li>Caderno do aluno</li>
+                        <li>Atividade impressa com exercícios de análise</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Metodologia -->
+            <div class="section methodology">
+                <div class="section-header">
+                    <span class="icon">📝</span>
+                    Desenvolvimento da Aula
+                </div>
+                <div class="section-body">
+                    <div class="moment">
+                        <div class="moment-header">
+                            <span class="moment-title">1. Aquecimento</span>
+                            <span class="moment-time">10 min</span>
+                        </div>
+                        <div class="moment-content">
+                            Leitura de dois pequenos trechos de textos que contam a mesma história, mas com narradores diferentes. Perguntar aos alunos: "O que muda entre um texto e outro?". Registrar as hipóteses no quadro.
+                        </div>
+                    </div>
+                    
+                    <div class="moment">
+                        <div class="moment-header">
+                            <span class="moment-title">2. Apresentação do Conteúdo</span>
+                            <span class="moment-time">15 min</span>
+                        </div>
+                        <div class="moment-content">
+                            Explicar os três tipos principais de narrador utilizando slides com exemplos práticos. Destacar as características de cada um: narrador-personagem (eu), narrador-observador (ele, externo), narrador-onisciente (conhece pensamentos).
+                        </div>
+                    </div>
+                    
+                    <div class="moment">
+                        <div class="moment-header">
+                            <span class="moment-title">3. Atividade em Grupos</span>
+                            <span class="moment-time">20 min</span>
+                        </div>
+                        <div class="moment-content">
+                            Dividir a turma em grupos de 4 alunos. Cada grupo recebe trechos literários e deve identificar o tipo de narrador, justificando com elementos do texto. Troca de análises entre grupos para comparação.
+                        </div>
+                    </div>
+                    
+                    <div class="moment">
+                        <div class="moment-header">
+                            <span class="moment-title">4. Produção Textual</span>
+                            <span class="moment-time">30 min</span>
+                        </div>
+                        <div class="moment-content">
+                            Propor uma situação simples (ex: "Um dia de chuva na escola") e pedir que os alunos escrevam o mesmo evento utilizando dois narradores diferentes. Depois, voluntários leem seus textos para a turma.
+                        </div>
+                    </div>
+                    
+                    <div class="moment">
+                        <div class="moment-header">
+                            <span class="moment-title">5. Sistematização</span>
+                            <span class="moment-time">10 min</span>
+                        </div>
+                        <div class="moment-content">
+                            Construir coletivamente um quadro-síntese com as características de cada narrador. Registrar no caderno. Indicar tarefa de casa: encontrar um exemplo de cada tipo de narrador em livros ou textos online.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Avaliação -->
+            <div class="section evaluation">
+                <div class="section-header">
+                    <span class="icon">✅</span>
+                    Avaliação
+                </div>
+                <div class="section-body">
+                    <ul>
+                        <li><strong>Participação:</strong> Engajamento nas discussões e atividades em grupo</li>
+                        <li><strong>Análise textual:</strong> Capacidade de identificar corretamente os tipos de narrador</li>
+                        <li><strong>Produção textual:</strong> Coerência na aplicação dos diferentes narradores no texto produzido</li>
+                        <li><strong>Tarefa de casa:</strong> Identificação de exemplos em textos externos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Gerado por <span class="logo">PlanBel 2.0</span> · Plano de aula alinhado à BNCC
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlanBel 2.0 - Gerador de Planos de Aula</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 2rem;
+        }
+
+        h1 {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 2rem;
+            color: #fbbf24;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .panel {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .panel h2 {
+            color: #fbbf24;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 0.4rem;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.65rem;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 0.85rem;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #fbbf24;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #0f172a;
+            padding: 0.4rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border: 1px solid #334155;
+            transition: all 0.2s;
+        }
+
+        .checkbox-item:has(input:checked) {
+            background: rgba(251, 191, 36, 0.2);
+            border-color: #fbbf24;
+        }
+
+        .checkbox-item input {
+            width: auto;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            border: none;
+            border-radius: 8px;
+            color: #0f172a;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .output-panel {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #output {
+            flex: 1;
+            background: #0f172a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            max-height: 80vh;
+        }
+
+        #output h1,
+        #output h2,
+        #output h3,
+        #output h4 {
+            color: #fbbf24;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        #output h1 {
+            font-size: 1.5rem;
+        }
+
+        #output h2 {
+            font-size: 1.2rem;
+        }
+
+        #output h3 {
+            font-size: 1rem;
+        }
+
+        #output strong {
+            color: #f8fafc;
+        }
+
+        #output ul,
+        #output ol {
+            margin-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        #output hr {
+            border: none;
+            border-top: 1px solid #334155;
+            margin: 1.5rem 0;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #fbbf24;
+            padding: 2rem;
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid #fbbf24;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .status {
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status.success {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .status.error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .status.info {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .api-status {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-left: auto;
+        }
+
+        .api-status.connected {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .api-status.disconnected {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎓 PlanBel 2.0</h1>
+        <p class="subtitle">
+            Gerador de Planos de Aula com IA | Alinhado à BNCC
+            <span id="apiStatus" class="api-status disconnected">⚪ Verificando API...</span>
+        </p>
+
+        <div class="panel">
+            <h2>📝 Configurar Plano</h2>
+
+            <div class="form-group">
+                <label>Disciplina</label>
+                <select id="disciplina">
+                    <option value="Matemática">Matemática</option>
+                    <option value="Língua Portuguesa">Língua Portuguesa</option>
+                    <option value="Ciências">Ciências</option>
+                    <option value="História">História</option>
+                    <option value="Geografia">Geografia</option>
+                    <option value="Arte">Arte</option>
+                    <option value="Educação Física">Educação Física</option>
+                    <option value="Língua Inglesa">Língua Inglesa</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Ano/Série</label>
+                <select id="ano">
+                    <option value="1º ano - Ensino Fundamental">1º ano - EF</option>
+                    <option value="2º ano - Ensino Fundamental">2º ano - EF</option>
+                    <option value="3º ano - Ensino Fundamental">3º ano - EF</option>
+                    <option value="4º ano - Ensino Fundamental">4º ano - EF</option>
+                    <option value="5º ano - Ensino Fundamental">5º ano - EF</option>
+                    <option value="6º ano - Ensino Fundamental">6º ano - EF</option>
+                    <option value="7º ano - Ensino Fundamental">7º ano - EF</option>
+                    <option value="8º ano - Ensino Fundamental">8º ano - EF</option>
+                    <option value="9º ano - Ensino Fundamental">9º ano - EF</option>
+                    <option value="1º ano - Ensino Médio">1º ano - EM</option>
+                    <option value="2º ano - Ensino Médio">2º ano - EM</option>
+                    <option value="3º ano - Ensino Médio">3º ano - EM</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Tema da Aula *</label>
+                <input type="text" id="tema" placeholder="Ex: Frações e operações" />
+            </div>
+
+            <div class="form-group">
+                <label>Duração</label>
+                <select id="duracao">
+                    <option value="1">1 aula (50 min)</option>
+                    <option value="2">2 aulas (100 min)</option>
+                    <option value="3">3 aulas (150 min)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Metodologia Ativa</label>
+                <select id="metodologia">
+                    <option value="">Tradicional (sem metodologia específica)</option>
+                    <option value="Gamificação">🎮 Gamificação</option>
+                    <option value="PBL - Aprendizagem por Projetos">📋 PBL - Projetos</option>
+                    <option value="Sala de Aula Invertida">🔄 Sala Invertida</option>
+                    <option value="Rotação por Estações">🔁 Rotação por Estações</option>
+                    <option value="STEAM">🔬 STEAM</option>
+                    <option value="Design Thinking">💡 Design Thinking</option>
+                    <option value="Storytelling Pedagógico">📖 Storytelling</option>
+                    <option value="Aprendizagem Cooperativa">👥 Aprendizagem Cooperativa</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Recursos Disponíveis</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" value="Quadro/Lousa" checked> Quadro</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Projetor"> Projetor</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Computadores"> PCs</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Tablets"> Tablets</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Material Impresso"> Impresso</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Material Manipulável">
+                        Manipulável</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Observações da Turma (opcional)</label>
+                <textarea id="observacoes" rows="2" placeholder="Ex: Turma com 30 alunos, 2 com TDAH..."></textarea>
+            </div>
+
+            <button id="btnGerar" onclick="gerarPlano()">✨ Gerar Plano de Aula</button>
+        </div>
+
+        <div class="panel output-panel">
+            <h2>📄 Plano de Aula Gerado</h2>
+            <div id="status"></div>
+            <div id="output">
+                <div style="text-align: center; color: #64748b; padding: 2rem;">
+                    <p style="font-size: 3rem; margin-bottom: 1rem;">📚</p>
+                    <p>Preencha os campos e clique em <strong>"Gerar Plano de Aula"</strong></p>
+                    <p style="margin-top: 0.5rem; font-size: 0.8rem;">O plano será gerado com IA usando o prompt mestre
+                        do PlanBel</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000';
+
+        // Verificar status da API ao carregar
+        async function checkAPI() {
+            const statusEl = document.getElementById('apiStatus');
+            try {
+                const response = await fetch(`${API_URL}/api/health`);
+                const data = await response.json();
+                if (data.status === 'ok') {
+                    statusEl.textContent = '🟢 API Conectada';
+                    statusEl.className = 'api-status connected';
+                }
+            } catch (e) {
+                statusEl.textContent = '🔴 API Offline - Inicie o servidor';
+                statusEl.className = 'api-status disconnected';
+            }
+        }
+
+        // Formatar markdown para HTML básico
+        function formatMarkdown(text) {
+            return text
+                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/^- (.*$)/gim, '• $1')
+                .replace(/^---$/gim, '<hr>')
+                .replace(/\n/g, '<br>');
+        }
+
+        async function gerarPlano() {
+            const disciplina = document.getElementById('disciplina').value;
+            const ano = document.getElementById('ano').value;
+            const tema = document.getElementById('tema').value;
+            const duracao = parseInt(document.getElementById('duracao').value);
+            const metodologia = document.getElementById('metodologia').value;
+            const observacoes = document.getElementById('observacoes').value;
+
+            const recursos = [...document.querySelectorAll('.checkbox-group input:checked')]
+                .map(cb => cb.value);
+
+            if (!tema) {
+                alert('Por favor, insira o tema da aula');
+                return;
+            }
+
+            const output = document.getElementById('output');
+            const status = document.getElementById('status');
+            const btn = document.getElementById('btnGerar');
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Gerando...';
+            output.innerHTML = '<div class="loading"><div class="spinner"></div>Gerando plano de aula com IA...</div>';
+            status.innerHTML = '<div class="status info">🤖 Processando com o modelo Llama 3.3 70B...</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/api/gerar-plano`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        disciplina,
+                        ano_escolar: ano,
+                        tema,
+                        duracao_aulas: duracao,
+                        metodologia: metodologia || null,
+                        recursos: recursos.length > 0 ? recursos : null,
+                        observacoes: observacoes || null
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    status.innerHTML = `<div class="status success">✅ Gerado com sucesso! (${data.tokens} tokens)</div>`;
+                    output.innerHTML = formatMarkdown(data.plano);
+                } else {
+                    throw new Error(data.error || 'Erro desconhecido');
+                }
+
+            } catch (error) {
+                status.innerHTML = `<div class="status error">❌ Erro: ${error.message}</div>`;
+                output.innerHTML = `
+                    <div style="text-align: center; color: #ef4444; padding: 2rem;">
+                        <p style="font-size: 2rem; margin-bottom: 1rem;">⚠️</p>
+                        <p><strong>Erro ao gerar o plano</strong></p>
+                        <p style="margin-top: 0.5rem; font-size: 0.85rem;">${error.message}</p>
+                        <p style="margin-top: 1rem; font-size: 0.8rem; color: #94a3b8;">
+                            Verifique se o servidor está rodando:<br>
+                            <code>python servidor.py</code>
+                        </p>
+                    </div>
+                `;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '✨ Gerar Plano de Aula';
+            }
+        }
+
+        // Verificar API ao carregar
+        checkAPI();
+    </script>
+</body>
+
+</html>
