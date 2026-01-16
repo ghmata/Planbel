@@ -251,7 +251,25 @@ ${plan.materiaisNecessarios.join(', ')}
 
         <div className="rounded-2xl border bg-card p-4 mt-4">
           <h2 className="font-semibold mb-4">Cronograma</h2>
-          <div className="overflow-x-auto">
+          {/* Visualização Mobile (Cards) */}
+          <div className="space-y-3 md:hidden">
+            {plan.cronograma.map((item, index) => (
+              <div key={index} className="bg-muted/30 p-3 rounded-lg border">
+                <div className="flex justify-between items-start mb-2 pb-2 border-b border-border/50">
+                  <span className="font-semibold text-sm text-foreground pr-2">{item.etapa}</span>
+                  <Badge variant="secondary" className="text-xs whitespace-nowrap shrink-0 h-6">
+                    {item.tempo}
+                  </Badge>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                  {item.descricao}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Visualização Desktop (Tabela) */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b">
@@ -262,9 +280,9 @@ ${plan.materiaisNecessarios.join(', ')}
               </thead>
               <tbody>
                 {plan.cronograma.map((item, index) => (
-                  <tr key={index} className="border-b last:border-0">
-                    <td className="py-3 font-medium">{item.etapa}</td>
-                    <td className="py-3 text-muted-foreground">{item.tempo}</td>
+                  <tr key={index} className="border-b last:border-0 hover:bg-muted/30 transition-colors">
+                    <td className="py-3 font-medium w-[25%]">{item.etapa}</td>
+                    <td className="py-3 text-muted-foreground w-[15%]">{item.tempo}</td>
                     <td className="py-3 text-muted-foreground whitespace-pre-wrap">{item.descricao}</td>
                   </tr>
                 ))}
