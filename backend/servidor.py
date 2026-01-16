@@ -860,6 +860,69 @@ TIPOS_JOGOS_DETALHADOS = {
 }
 
 
+def gerar_material_impresso(plano: Dict) -> Tuple[dict, int]:
+    """
+    Gera material didático imprimível (exercícios, texto de apoio, etc).
+    """
+    try:
+        titulo = plano.get('titulo', 'Atividade')
+        serie = plano.get('serie', '')
+        disciplina = plano.get('disciplina', '')
+        conteudo = plano.get('desenvolvimento', '')
+        objetivos = plano.get('objetivos', '')
+        
+        logger.info(f"Gerando material impresso: {titulo}")
+        
+        system_prompt = """Você é um ESPECIALISTA em design de materiais didáticos imprimíveis.
+MISSÃO: Criar uma folha de atividades/exercícios completa baseada no plano de aula.
+FORMATO: HTML puro, pronto para impressão (A4).
+
+ESTRUTURA:
+1. Cabeçalho (Escola, Nome, Data, Turma)
+2. Título da Atividade
+3. Texto de Apoio (Contextualização breve)
+4. 4-5 Questões/Atividades diversificadas (Múltipla escolha, Dissertativa, Relacione, etc)
+5. Espaço para respostas
+6. Gabarito (em página separada ou no final, estilo 'Professor')
+
+ESTILO:
+- Fontes claras (Arial/Verdana)
+- Preto e branco (economizar tinta)
+- Espaçamento adequado para escrita
+- Use CSS @media print para quebras de página
+
+RETORNE APENAS O HTML. Sem markdown."""
+
+        user_prompt = f"""Crie o material para esta aula:
+Título: {titulo}
+Série: {serie}
+Disciplina: {disciplina}
+Objetivos: {objetivos}
+Conteúdo da Aula: {conteudo}
+
+Gere agora."""
+
+        config = {"temperature": 0.7, "max_output_tokens": 4000}
+        model = genai.GenerativeModel(model_name=model_name, system_instruction=system_prompt, generation_config=config)
+        
+        response = model.generate_content(user_prompt)
+        
+        if not response or not response.text:
+             return jsonify({"success": False, "error": "Sem resposta da IA"}), 500
+             
+        html = _limpar_html(response.text)
+        
+        return jsonify({
+            "success": True, 
+            "html": html,
+            "titulo": f"Atividade - {titulo}"
+        }), 200
+
+    except Exception as e:
+        logger.exception("Erro ao gerar material")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
 def gerar_jogo_educativo(plano: Dict) -> Tuple[dict, int]:
     """
     Função principal: gera jogo educativo imprimível.
@@ -1226,6 +1289,14 @@ def _validar_html_basico(html: str) -> bool:
             todas_validas = False
     
     return todas_validas
+
+
+@app.route('/api/gerar-material', methods=['POST'])
+def gerar_material():
+    """Endpoint para gerar material impresso."""
+    data = request.json
+    plano = data.get('plano', {})
+    return gerar_material_impresso(plano)
 
 
 @app.route('/api/gerar-jogo', methods=['POST'])
