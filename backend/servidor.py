@@ -1319,7 +1319,7 @@ if __name__ == '__main__':
     print("\n" + "="*60)
     print("🚀 PlanBel 2.0 - Servidor de API")
     print("="*60)
-    port = int(os.getenv("PORT", 5000))
+    port = int(os.getenv("PORT", 7860))
     print(f"📍 Interface: http://localhost:{port}")
     print(f"🔗 API: http://localhost:{port}/api/gerar-plano")
     print(f"🤖 Modelo: {model_name} (Gemini)")

@@ -15,6 +15,20 @@ const getBaseUrl = () => {
 
 const API_URL = getBaseUrl();
 
+// Helper para headers (inclui token do Hugging Face se existir)
+const getHeaders = () => {
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  };
+  
+  const hfToken = import.meta.env.VITE_HF_TOKEN;
+  if (hfToken) {
+    headers['Authorization'] = `Bearer ${hfToken}`;
+  }
+  
+  return headers;
+};
+
 interface WizardData {
   disciplinas: { id: string; nome: string; conteudos: string[] }[];
   serie: string;
@@ -126,9 +140,7 @@ export async function generatePlan(wizardData: WizardData): Promise<GeneratedPla
 
   const response = await fetch(`${API_URL}/api/gerar-plano-estruturado`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: getHeaders(),
     body: JSON.stringify(requestBody),
   });
 
@@ -171,7 +183,9 @@ export async function generatePlan(wizardData: WizardData): Promise<GeneratedPla
  */
 export async function checkApiHealth(): Promise<boolean> {
   try {
-    const response = await fetch(`${API_URL}/api/health`);
+    const response = await fetch(`${API_URL}/api/health`, {
+      headers: getHeaders()
+    });
     const data = await response.json();
     return data.status === 'ok';
   } catch {
@@ -192,9 +206,7 @@ interface MaterialResponse {
 export async function generatePrintableMaterial(plan: GeneratedPlan): Promise<MaterialResponse> {
   const response = await fetch(`${API_URL}/api/gerar-material`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: getHeaders(),
     body: JSON.stringify({ plano: plan }),
   });
 
@@ -218,9 +230,7 @@ export async function generatePrintableMaterial(plan: GeneratedPlan): Promise<Ma
 export async function generateGame(plan: GeneratedPlan): Promise<MaterialResponse> {
   const response = await fetch(`${API_URL}/api/gerar-jogo`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: getHeaders(),
     body: JSON.stringify({ plano: plan }),
   });
 
