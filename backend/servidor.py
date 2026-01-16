@@ -36,7 +36,7 @@ else:
 
 # Modelo padrão (gemini-3-pro solicitado pelo usuário)
 # Modelo padrão
-model_name = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+model_name = os.getenv("GEMINI_MODEL", "gemini-3-flash-preview")
 
 
 @app.route('/')
