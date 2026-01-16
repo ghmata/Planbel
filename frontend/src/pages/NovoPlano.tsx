@@ -151,14 +151,19 @@ export default function NovoPlano() {
             </div>
           ) : (
             <Button
-              className="flex-1 h-11 sm:h-10"
+              className="flex-1 h-auto min-h-[44px] py-2 whitespace-normal"
               onClick={generatePlan}
               disabled={isGenerating || !canProceed()}
             >
               {isGenerating ? (
-                <div className="flex items-center gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  <span className="text-xs sm:text-sm truncate">{statusMessage || `${progress}%`}</span>
+                <div className="flex flex-col items-center justify-center gap-1 w-full">
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin shrink-0" />
+                    <span className="text-xs font-semibold">{`${progress}%`}</span>
+                  </div>
+                  <span className="text-[10px] sm:text-xs text-center leading-tight opacity-90 break-words w-full px-1">
+                    {statusMessage}
+                  </span>
                 </div>
               ) : (
                 <>
