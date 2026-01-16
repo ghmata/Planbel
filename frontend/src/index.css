@@ -135,9 +135,21 @@ All colors MUST be HSL.
 @layer base {
   * {
     @apply border-border;
+    touch-action: manipulation;
+  }
+
+  html, body {
+    touch-action: manipulation;
   }
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Mobile touch optimizations */
+  button, 
+  [role="button"], 
+  .cursor-pointer {
+    -webkit-tap-highlight-color: transparent;
   }
 }

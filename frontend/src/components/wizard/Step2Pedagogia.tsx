@@ -39,32 +39,32 @@ export function Step2Pedagogia() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       <div>
-        <h2 className="text-xl font-semibold mb-2">Objetivos de Aprendizagem</h2>
-        <p className="text-muted-foreground text-sm mb-4">
+        <h2 className="text-lg sm:text-xl font-semibold mb-2 select-none">Objetivos de Aprendizagem</h2>
+        <p className="text-muted-foreground text-xs sm:text-sm mb-4 select-none">
           Descreva o que os alunos devem aprender nesta aula
         </p>
         <Textarea
           placeholder="Ex: Ao final da aula, os alunos deverão ser capazes de identificar e resolver problemas envolvendo frações..."
           value={data.objetivos}
           onChange={(e) => setData(prev => ({ ...prev, objetivos: e.target.value }))}
-          className="min-h-[120px] resize-none"
+          className="min-h-[100px] sm:min-h-[120px] resize-none text-sm"
         />
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mb-2">Duração da Aula</h2>
-        <p className="text-muted-foreground text-sm mb-4">
+        <h2 className="text-lg sm:text-xl font-semibold mb-2 select-none">Duração da Aula</h2>
+        <p className="text-muted-foreground text-xs sm:text-sm mb-4 select-none">
           Selecione o tempo total disponível
         </p>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {duracoes.map(({ value, label, desc }) => (
             <button
               key={value}
               onClick={() => setData(prev => ({ ...prev, duracao: value as typeof data.duracao }))}
               className={cn(
-                'rounded-2xl p-4 border-2 transition-all text-center',
+                'rounded-2xl p-3 sm:p-4 border-2 transition-all text-center min-h-[70px]',
                 data.duracao === value
                   ? 'border-primary bg-primary/5'
                   : 'border-border hover:border-primary/50'
@@ -82,11 +82,11 @@ export function Step2Pedagogia() {
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mb-2">Dinâmicas de Interação</h2>
-        <p className="text-muted-foreground text-sm mb-4">
+        <h2 className="text-lg sm:text-xl font-semibold mb-2 select-none">Dinâmicas de Interação</h2>
+        <p className="text-muted-foreground text-xs sm:text-sm mb-4 select-none">
           Como os alunos vão trabalhar durante a aula
         </p>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {DINAMICAS.map(({ id, label, icon }) => {
             const Icon = iconMap[icon as keyof typeof iconMap];
             const isSelected = data.dinamicas.includes(id);
@@ -95,7 +95,7 @@ export function Step2Pedagogia() {
                 key={id}
                 onClick={() => toggleDinamica(id)}
                 className={cn(
-                  'rounded-2xl p-4 border-2 transition-all text-center',
+                  'rounded-2xl p-3 sm:p-4 border-2 transition-all text-center min-h-[70px]',
                   isSelected
                     ? 'border-primary bg-primary/5'
                     : 'border-border hover:border-primary/50'
@@ -115,8 +115,8 @@ export function Step2Pedagogia() {
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mb-2">Métodos de Avaliação</h2>
-        <p className="text-muted-foreground text-sm mb-4">
+        <h2 className="text-lg sm:text-xl font-semibold mb-2 select-none">Métodos de Avaliação</h2>
+        <p className="text-muted-foreground text-xs sm:text-sm mb-4 select-none">
           Como você vai avaliar o aprendizado
         </p>
         <div className="flex flex-wrap gap-2">
@@ -125,7 +125,7 @@ export function Step2Pedagogia() {
               key={avaliacao}
               variant={data.avaliacoes.includes(avaliacao) ? 'default' : 'outline'}
               className={cn(
-                'cursor-pointer transition-all py-2 px-4',
+                'cursor-pointer transition-all py-2 px-3 sm:px-4 text-xs sm:text-sm min-h-[44px] flex items-center',
                 data.avaliacoes.includes(avaliacao) && 'bg-primary text-primary-foreground'
               )}
               onClick={() => toggleAvaliacao(avaliacao)}

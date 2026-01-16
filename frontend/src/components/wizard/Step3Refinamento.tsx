@@ -100,13 +100,13 @@ export function Step3Refinamento() {
 
   return (
     <>
-      <div className="space-y-8">
+      <div className="space-y-6 sm:space-y-8">
         <div>
-          <h2 className="text-xl font-semibold mb-2">Metodologias Ativas</h2>
-          <p className="text-muted-foreground text-sm mb-4">
+          <h2 className="text-lg sm:text-xl font-semibold mb-2 select-none">Metodologias Ativas</h2>
+          <p className="text-muted-foreground text-xs sm:text-sm mb-4 select-none">
             Selecione abordagens pedagógicas inovadoras (opcional)
           </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
             {METODOLOGIAS.map(({ id, label, desc }) => {
               const Icon = metodologiaIcons[id];
               const isSelected = data.metodologias.includes(id);
@@ -115,20 +115,20 @@ export function Step3Refinamento() {
                   key={id}
                   onClick={() => toggleMetodologia(id)}
                   className={cn(
-                    'rounded-2xl p-4 border-2 transition-all text-left',
+                    'rounded-2xl p-3 sm:p-4 border-2 transition-all text-left min-h-[80px]',
                     isSelected
                       ? 'border-accent bg-accent/10'
                       : 'border-border hover:border-accent/50'
                   )}
                 >
                   <Icon className={cn(
-                    'h-6 w-6 mb-2',
+                    'h-5 w-5 sm:h-6 sm:w-6 mb-2',
                     isSelected ? 'text-accent' : 'text-muted-foreground'
                   )} />
-                  <p className={cn('font-medium', isSelected && 'text-accent-foreground')}>
+                  <p className={cn('text-xs sm:text-sm font-medium', isSelected && 'text-accent-foreground')}>
                     {label}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">{desc}</p>
+                  <p className="text-[10px] sm:text-xs text-muted-foreground mt-1">{desc}</p>
                 </button>
               );
             })}
@@ -162,8 +162,8 @@ export function Step3Refinamento() {
         </div>
 
         <div>
-          <h2 className="text-xl font-semibold mb-2">Recursos Didáticos</h2>
-          <p className="text-muted-foreground text-sm mb-4">
+          <h2 className="text-lg sm:text-xl font-semibold mb-2 select-none">Recursos Didáticos</h2>
+          <p className="text-muted-foreground text-xs sm:text-sm mb-4 select-none">
             Tipos de recursos que você pretende usar
           </p>
           <div className="flex flex-wrap gap-2">
@@ -172,7 +172,7 @@ export function Step3Refinamento() {
                 key={recurso}
                 variant={data.recursos.includes(recurso) ? 'default' : 'outline'}
                 className={cn(
-                  'cursor-pointer transition-all py-2 px-4',
+                  'cursor-pointer transition-all py-2 px-3 sm:px-4 text-xs sm:text-sm min-h-[44px] flex items-center',
                   data.recursos.includes(recurso) && 'bg-accent text-accent-foreground'
                 )}
                 onClick={() => toggleRecurso(recurso)}
@@ -184,11 +184,11 @@ export function Step3Refinamento() {
         </div>
 
         <div>
-          <h2 className="text-xl font-semibold mb-2">Materiais Disponíveis</h2>
-          <p className="text-muted-foreground text-sm mb-4">
+          <h2 className="text-lg sm:text-xl font-semibold mb-2 select-none">Materiais Disponíveis</h2>
+          <p className="text-muted-foreground text-xs sm:text-sm mb-4 select-none">
             Marque os materiais que você tem acesso na escola
           </p>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {MATERIAIS.map(material => (
               <div key={material} className="flex items-center space-x-3">
                 <Checkbox
@@ -198,7 +198,7 @@ export function Step3Refinamento() {
                 />
                 <label
                   htmlFor={material}
-                  className="text-sm font-medium cursor-pointer"
+                  className="text-xs sm:text-sm font-medium cursor-pointer select-none"
                 >
                   {material}
                 </label>
@@ -209,16 +209,17 @@ export function Step3Refinamento() {
           <div className="mt-4">
             <Input
               placeholder="Outros materiais disponíveis..."
+              className="text-sm"
               value={data.materiaisCustom}
               onChange={(e) => setData(prev => ({ ...prev, materiaisCustom: e.target.value }))}
             />
           </div>
         </div>
 
-        <div className="flex items-center justify-between rounded-2xl border p-4">
-          <div>
-            <p className="font-medium">Permitir materiais extras</p>
-            <p className="text-sm text-muted-foreground">
+        <div className="flex items-center justify-between rounded-2xl border p-3 sm:p-4 gap-3">
+          <div className="flex-1 min-w-0">
+            <p className="font-medium text-sm sm:text-base">Permitir materiais extras</p>
+            <p className="text-xs sm:text-sm text-muted-foreground">
               A IA pode sugerir materiais além dos selecionados
             </p>
           </div>
@@ -230,7 +231,7 @@ export function Step3Refinamento() {
 
         {/* Checkbox para Material Impresso */}
         <div className={cn(
-          "rounded-2xl border p-4 transition-all",
+          "rounded-2xl border p-3 sm:p-4 transition-all",
           data.gerarMaterialImpresso ? "border-amber-500/50 bg-amber-500/5" : ""
         )}>
           <div className="flex items-start space-x-3">
@@ -242,7 +243,7 @@ export function Step3Refinamento() {
             <div className="flex-1">
               <label
                 htmlFor="gerarMaterialImpresso"
-                className="font-medium cursor-pointer flex items-center gap-2"
+                className="text-sm sm:text-base font-medium cursor-pointer flex items-center gap-2 select-none"
               >
                 📄 Gerar sugestão de material impresso?
               </label>
@@ -260,15 +261,15 @@ export function Step3Refinamento() {
         </div>
 
         <div>
-          <h2 className="text-xl font-semibold mb-2">Observações sobre a Turma</h2>
-          <p className="text-muted-foreground text-sm mb-4">
+          <h2 className="text-lg sm:text-xl font-semibold mb-2 select-none">Observações sobre a Turma</h2>
+          <p className="text-muted-foreground text-xs sm:text-sm mb-4 select-none">
             Informações adicionais sobre necessidades especiais, nível da turma, etc.
           </p>
           <Textarea
             placeholder="Ex: Turma com 30 alunos, nível heterogêneo, 2 alunos com TDAH..."
             value={data.observacoes}
             onChange={(e) => setData(prev => ({ ...prev, observacoes: e.target.value }))}
-            className="min-h-[100px] resize-none"
+            className="min-h-[80px] sm:min-h-[100px] resize-none text-sm"
           />
         </div>
       </div>

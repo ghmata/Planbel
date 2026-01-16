@@ -113,53 +113,58 @@ export default function NovoPlano() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b px-6 py-4">
+      <header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b px-4 sm:px-6 py-3 sm:py-4">
         <div className="max-w-2xl mx-auto">
           <ProgressBar currentStep={currentStep} steps={STEPS} />
         </div>
       </header>
 
-      <main className="flex-1 p-6 max-w-2xl mx-auto w-full">
+      <main className="flex-1 p-4 sm:p-6 max-w-2xl mx-auto w-full">
         {currentStep === 1 && <Step1Contexto />}
         {currentStep === 2 && <Step2Pedagogia />}
         {currentStep === 3 && <Step3Refinamento />}
       </main>
 
-      <footer className="sticky bottom-0 bg-background/95 backdrop-blur border-t px-6 py-4 mb-16 md:mb-0">
-        <div className="max-w-2xl mx-auto flex gap-3">
+      <footer className="sticky bottom-0 bg-background/95 backdrop-blur border-t px-4 sm:px-6 py-3 sm:py-4 mb-16 md:mb-0">
+        <div className="max-w-2xl mx-auto flex gap-2 sm:gap-3">
           <Button
             variant="outline"
-            className="flex-1"
+            className="flex-1 h-11 sm:h-10"
             onClick={handleBack}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            {currentStep === 1 ? 'Cancelar' : 'Voltar'}
+            <span className="hidden sm:inline">{currentStep === 1 ? 'Cancelar' : 'Voltar'}</span>
+            <span className="sm:hidden">{currentStep === 1 ? 'Cancelar' : 'Voltar'}</span>
           </Button>
 
           {currentStep < 3 ? (
-            <Button
-              className="flex-1"
-              onClick={handleNext}
-              disabled={!canProceed()}
-            >
-              Próximo
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </Button>
+            <div className="flex-1 flex flex-col items-end">
+              <Button
+                className="w-full h-11 sm:h-10"
+                onClick={handleNext}
+                disabled={!canProceed()}
+              >
+                <span>Próximo</span>
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
+
+            </div>
           ) : (
             <Button
-              className="flex-1"
+              className="flex-1 h-11 sm:h-10"
               onClick={generatePlan}
               disabled={isGenerating || !canProceed()}
             >
-            {isGenerating ? (
+              {isGenerating ? (
                 <div className="flex items-center gap-2">
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  <span className="text-sm">{statusMessage || `Gerando... ${progress}%`}</span>
+                  <span className="text-xs sm:text-sm truncate">{statusMessage || `${progress}%`}</span>
                 </div>
               ) : (
                 <>
-                  <Sparkles className="h-4 w-4 mr-2" />
-                  Gerar Plano de Aula
+                  <Sparkles className="h-4 w-4 mr-2 flex-shrink-0" />
+                  <span className="hidden sm:inline">Gerar Plano de Aula</span>
+                  <span className="sm:hidden">Gerar Plano</span>
                 </>
               )}
             </Button>

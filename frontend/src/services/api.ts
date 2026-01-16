@@ -3,7 +3,17 @@
  * Centraliza todas as chamadas ao backend Flask
  */
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+// Detecta automaticamente o IP se estiver rodando localmente (para acesso mobile)
+const getBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
+  // Se estiver no localhost ou IP local, assume que o backend está na porta 5000 do mesmo host
+  if (window.location.hostname === 'localhost' || window.location.hostname.match(/^192\.168\./)) {
+    return `http://${window.location.hostname}:5000`;
+  }
+  return 'http://localhost:5000';
+};
+
+const API_URL = getBaseUrl();
 
 interface WizardData {
   disciplinas: { id: string; nome: string; conteudos: string[] }[];
