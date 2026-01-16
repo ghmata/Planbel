@@ -36,7 +36,7 @@ else:
 
 # Modelo padrão (gemini-3-pro solicitado pelo usuário)
 # Modelo padrão
-model_name = os.getenv("GEMINI_MODEL", "gemini-3-flash-preview")
+model_name = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
 
 
 @app.route('/')
@@ -976,7 +976,7 @@ def gerar_jogo_educativo(plano: Dict) -> Tuple[dict, int]:
             "temperature": 0.9,
             "top_p": 0.95,
             "top_k": 40,
-            "max_output_tokens": 8192,
+            "max_output_tokens": 4000,
         }
         
         safety = [
