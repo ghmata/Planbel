@@ -1,0 +1,21 @@
+# Environment
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Outputs
+outputs/
+generation_results.txt
+models_list.txt
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

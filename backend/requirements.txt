@@ -1,17 +1,12 @@
-# Core
-crewai>=0.28.0
-crewai-tools>=0.1.0
-litellm>=1.0.0
-groq>=0.4.0
+# Web Framework
+Flask>=3.0.0
+flask-cors>=4.0.0
+
+# Google Gemini AI
 google-generativeai>=0.3.0
 
 # Utilities
 python-dotenv>=1.0.0
-pydantic>=2.0.0
-rich>=13.0.0
 
-# PDF Processing (para extrair BNCC)
-pymupdf>=1.23.0
-
-# JSON handling
-orjson>=3.9.0
+# Server (para produção)
+gunicorn>=21.2.0
