@@ -16,6 +16,7 @@ dist-ssr
 .vscode/*
 !.vscode/extensions.json
 .idea
+# lib/ <- REMOVIDO: estava ignorando src/lib/utils.ts necessário para o build
 .DS_Store
 *.suo
 *.ntvs*
