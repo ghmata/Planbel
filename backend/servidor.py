@@ -1264,6 +1264,13 @@ def _limpar_html(html_bruto: str) -> str:
         html = html.split('```')[1].split('```')[0]
     
     html = html.strip()
+
+    # Fallback para HTML truncado (auto-fechamento)
+    if not html.endswith('</html>'):
+        logger.warning("HTML truncado detectado. Tentando reparar...")
+        if '</body>' not in html[-20:]: # Se não fechou o body
+            html += "\n</body>"
+        html += "\n</html>"
     
     if not html.lower().startswith('<!doctype'):
         logger.warning("HTML sem DOCTYPE")
